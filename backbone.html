@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>llama2_project - Backbone</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./baseclass.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">LLAMA2 Project</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto tools-wide">
+    <a href="https://github.com/nvtai040502" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./backbone.html">Backbone</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./backbone.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Backbone</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./baseclass.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Basic Class</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./llamap1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Llama2 Architecture (P1)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./llamap2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Llama2 Architecture (P2)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./initweight.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Weight Initialization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hyperparameter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hyperparameter</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./trainmodel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train Model</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Appendix</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Appendix/transformer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transformer Architecture</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#setup-dataset" id="toc-setup-dataset" class="nav-link active" data-scroll-target="#setup-dataset">Setup Dataset</a></li>
+  <li><a href="#embedding" id="toc-embedding" class="nav-link" data-scroll-target="#embedding">Embedding</a></li>
+  <li><a href="#self-attention" id="toc-self-attention" class="nav-link" data-scroll-target="#self-attention">Self Attention</a></li>
+  <li><a href="#cross-attention" id="toc-cross-attention" class="nav-link" data-scroll-target="#cross-attention">Cross Attention</a></li>
+  <li><a href="#feed-forward" id="toc-feed-forward" class="nav-link" data-scroll-target="#feed-forward">Feed Forward</a></li>
+  <li><a href="#transformer-block" id="toc-transformer-block" class="nav-link" data-scroll-target="#transformer-block">Transformer Block</a></li>
+  <li><a href="#transformer-head" id="toc-transformer-head" class="nav-link" data-scroll-target="#transformer-head">Transformer Head</a></li>
+  <li><a href="#loss" id="toc-loss" class="nav-link" data-scroll-target="#loss">Loss</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nvtai040502/llama2_project/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Backbone</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Trong chươngđầu của dự án này, tôi sẽ hướng dẫn bạn qua quá trình forward propagation và tính toán giá trị loss. Mục tiêu của chúng ta là hiểu sâu hơn về phần cốt lõi, yếu tố chính (“backbone”) của kiến trúc Transformers trong LLAMA2.</p>
+<p><img src="images/chap1/attention.png" alt="Attention Architecture" width="300"></p>
+<p>Về cơ bản, kiến trúc cốt lõi của LLAMA2 rất giống với kiến trúc Transformers (như hình ở trên).</p>
+<p>Trong quá trình viết code, tôi sẽ tiếp tục trình bày các ý tưởng chính của từng phần trong kiến trúc này. Tuy nhiên, nếu bạn muốn có cái nhìn chi tiết và sâu sắc hơn, bạn có thể xem phần Appendix, trong đó tôi sẽ giải thích từng phần trong kiến trúc này với chi tiết ở mức độ Character Level để bạn có thể hiểu rõ hơn về nó.</p>
+<section id="setup-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="setup-dataset">Setup Dataset</h2>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_dataset(<span class="st">"roneneldan/TinyStories"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Repo card metadata block was not found. Setting CardData to empty.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>DatasetDict({
+    train: Dataset({
+        features: ['text'],
+        num_rows: 2119719
+    })
+    validation: Dataset({
+        features: ['text'],
+        num_rows: 21990
+    })
+})</code></pre>
+</div>
+</div>
+<p>Trong dự án này, tôi sử dụng bộ dữ liệu “Tiny Datasets”, một tập dữ liệu chứa các câu tiếng Anh đơn giản, thích hợp cho trẻ 3-4 tuổi có khả năng đọc dễ dàng. Bộ dữ liệu này bao gồm hơn 2 triệu câu cho phần huấn luyện (trainset) và gần 22.000 câu cho phần thử nghiệm (valid set).</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>subset_dataset <span class="op">=</span> dataset[<span class="st">'train'</span>][:sample][<span class="st">'text'</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> example <span class="kw">in</span> subset_dataset[:<span class="dv">1</span>]:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>One day, a little girl named Lily found a needle in her room. She knew it was difficult to play with it because it was sharp. Lily wanted to share the needle with her mom, so she could sew a button on her shirt.
+
+Lily went to her mom and said, "Mom, I found this needle. Can you share it with me and sew my shirt?" Her mom smiled and said, "Yes, Lily, we can share the needle and fix your shirt."
+
+Together, they shared the needle and sewed the button on Lily's shirt. It was not difficult for them because they were sharing and helping each other. After they finished, Lily thanked her mom for sharing the needle and fixing her shirt. They both felt happy because they had shared and worked together.</code></pre>
+</div>
+</div>
+<p>Ở đây, tôi sẽ chỉ sử dụng một lượng nhỏ dữ liệu, để bắt đầu xây dựng model của mình. Mục tiêu ban đầu là tạo ra một model hoàn chỉnh. Sau khi chúng ta đạt được một model đáng tin cậy, chúng ta có thể bắt đầu sử dụng toàn bộ hoặc một lượng lớn hơn của dữ liệu để train model.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"EleutherAI/gpt-neo-125M"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tokenizer.pad_token <span class="op">=</span> tokenizer.eos_token  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Tokenize the text data in the new subset dataset with padding and truncation</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>tokenized_dataset <span class="op">=</span> tokenizer(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    subset_dataset,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    return_tensors<span class="op">=</span><span class="st">'pt'</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    padding<span class="op">=</span><span class="va">True</span>,  <span class="co"># Enable padding</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    truncation<span class="op">=</span><span class="va">True</span>  <span class="co"># Enable truncation</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>tokenized_dataset[<span class="st">'input_ids'</span>][:<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>tensor([[ 3198,  1110,    11,   257,  1310,  2576,  3706, 20037,  1043,   257,
+         17598,   287,   607,  2119,    13,  1375,  2993,   340,   373,  2408,
+           284,   711,   351,   340,   780,   340,   373,  7786,    13, 20037,
+          2227,   284,  2648,   262, 17598,   351,   607,  1995,    11,   523,
+           673,   714, 34249,   257,  4936,   319,   607, 10147,    13,   198,
+           198,    43,   813,  1816,   284,   607,  1995,   290,   531,    11,
+           366, 29252,    11,   314,  1043,   428, 17598,    13,  1680,   345,
+          2648,   340,   351,   502,   290, 34249,   616, 10147,  1701,  2332,
+          1995, 13541,   290,   531,    11,   366,  5297,    11, 20037,    11,
+           356,   460,  2648,   262, 17598,   290,  4259,   534, 10147,   526,
+           198,   198, 41631,    11,   484,  4888,   262, 17598,   290,   384,
+         19103,   262,  4936,   319, 20037,   338, 10147,    13,   632,   373,
+           407,  2408,   329,   606,   780,   484,   547,  7373,   290,  5742,
+          1123,   584,    13,  2293,   484,  5201,    11, 20037, 26280,   607,
+          1995,   329,  7373,   262, 17598,   290, 18682,   607, 10147,    13,
+          1119,  1111,  2936,  3772,   780,   484,   550,  4888,   290,  3111,
+          1978,    13, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256,
+         50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256,
+         50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256,
+         50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256,
+         50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256,
+         50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256, 50256]])</code></pre>
+</div>
+</div>
+<p>Vì dữ liệu hiện tại của chúng ta là văn bản, chúng ta cần sử dụng một tokenizer để chuyển đổi dữ liệu thành định dạng số để mô hình có thể học được.</p>
+<p>Tôi đã quyết định sử dụng tokenizer từ mô hình EleutherAI/gpt-neo-125M vì tôi thấy nó phù hợp và tiện lợi cho giai đoạn bắt đầu. Sử dụng tokenizer từ LLAMA2 có thể đòi hỏi đăng nhập vào Hugging Face để truy cập, nhưng tôi cho rằng, ít nhất ở giai đoạn đầu, chúng ta nên giữ mọi thứ đơn giản. Trong các chương tiếp theo, tôi có thể xem xét cải tiến bằng cách sử dụng tokenizer từ LLAMA2 hoặc thậm chí tạo tokenizer từ đầu nếu cần.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> tokenized_dataset[<span class="st">'input_ids'</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> data[:, :<span class="op">-</span><span class="dv">1</span>].contiguous()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data[:, <span class="dv">1</span>:].contiguous()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>x.shape, y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>(torch.Size([20, 218]), torch.Size([20, 218]))</code></pre>
+</div>
+</div>
+<p>Tương tự như nhiều dự án khác, chúng ta cần hai thành phần chính: một là đầu vào (input) và hai là nhãn (label). Trong dự án này, đầu vào (input) sẽ bao gồm một chuỗi các từ được cung cấp, và nhãn (label) là từ tiếp theo sẽ xuất hiện trong chuỗi đó.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Input: </span><span class="sc">{</span>x[<span class="dv">0</span>, :i<span class="op">+</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss"> --&gt; Labels: </span><span class="sc">{</span>y[<span class="dv">0</span>,i]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Input: tensor([3198]) --&gt; Labels: 1110
+Input: tensor([3198, 1110]) --&gt; Labels: 11
+Input: tensor([3198, 1110,   11]) --&gt; Labels: 257
+Input: tensor([3198, 1110,   11,  257]) --&gt; Labels: 1310
+Input: tensor([3198, 1110,   11,  257, 1310]) --&gt; Labels: 2576</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vocab_size <span class="op">=</span> tokenizer.vocab_size</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sequence_len <span class="op">=</span> x.size(<span class="dv">1</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Vocab Size:         </span><span class="sc">{</span>vocab_size<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Max Sequence Length: </span><span class="sc">{</span>sequence_len<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Vocab Size:         50257
+Max Sequence Length: 218</code></pre>
+</div>
+</div>
+<p>Bởi vì chúng ta đang sử dụng EleutherAI/gpt-neo-125M làm tokenizer, Vocab Size của chúng ta sẽ là 50257. Đồng thời, độ dài tối đa của các chuỗi (max sequence length) mà chúng ta đang xử lý sẽ tạm thời là độ dài của chuỗi “x” trong chiều thứ hai, tức là “x.size(1)”.</p>
+</section>
+<section id="embedding" class="level2">
+<h2 class="anchored" data-anchor-id="embedding">Embedding</h2>
+<p><img src="images/chap1/embedding.png" alt="Embedding Architecture" width="400"></p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Output Embedding</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>n_embd <span class="op">=</span> <span class="dv">36</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>wte <span class="op">=</span> nn.Embedding(vocab_size, n_embd) <span class="co"># word to embedding</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>token_embd <span class="op">=</span> wte(x)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>token_embd.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>torch.Size([20, 218, 36])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Positional Encoding</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>position <span class="op">=</span> nn.Embedding(sequence_len, n_embd)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>position_embd <span class="op">=</span> position(torch.arange(sequence_len))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>position_embd.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>torch.Size([218, 36])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>x_embd <span class="op">=</span> token_embd <span class="op">+</span> position_embd</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>x_embd.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>torch.Size([20, 218, 36])</code></pre>
+</div>
+</div>
+<p>Ý tưởng cốt lõi của chúng ta là sử dụng một vectơ đặc trưng để biểu diễn mỗi từ trong bộ từ vựng (vocab size) của chúng ta. Đồng thời, chúng ta cũng áp dụng nguyên tắc này cho việc biểu diễn từng vị trí của các từ trong câu.</p>
+<p>Hãy xem xét từ “bàn” trong vocab size của chúng ta. Khi chúng ta thực hiện quá trình embedding, từ “bàn” này được chuyển đổi thành một vectơ đặc trưng duy nhất. Điều thú vị là vectơ này có khả năng biểu diễn từ “bàn” trong nhiều ngữ cảnh khác nhau - có thể là một cái bàn gỗ, một cuộc họp trên bàn, một cái bàn đạp xe, hoặc thậm chí một phần của chân. Điều này giúp model của chúng ta hiểu và biểu diễn nhiều sắc thái và ngữ nghĩa của từ “bàn” trong các tình huống khác nhau.</p>
+<p>Ngoài ra, chúng ta cũng tạo ra các biểu diễn độc lập cho từng vị trí của các từ trong câu. Ví dụ, từ “bàn” trong câu “Tôi vừa mua một cái bàn làm việc” sẽ có một biểu diễn vector vị trí riêng biệt, khác với từ “bàn” trong câu “Cái bàn kia thật đẹp”. Mặc dù cả hai trường hợp này có cùng nghĩa cho từ “bàn,” nhưng do vị trí của nó trong câu khác nhau (vị trí thứ 6 vs thứ 2), nó sẽ được biểu diễn theo cách khác nhau.</p>
+<p>Tóm lại, chúng ta sử dụng vectơ đặc trưng để biểu diễn từ (word embedding) và vị trí của từ trong câu (position embedding), cho phép model hiểu và biểu diễn ngữ nghĩa và ngữ cảnh của các từ một cách hiệu quả trong các ngữ cảnh khác nhau.</p>
+</section>
+<section id="self-attention" class="level2">
+<h2 class="anchored" data-anchor-id="self-attention">Self Attention</h2>
+<p><img src="images/chap1/self_attention.png" alt="Self Attention" width="400"></p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Norm before calculate attention</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> nn.LayerNorm(n_embd)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>x_embd_norm <span class="op">=</span> norm(x_embd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Trong kiến trúc Transformer, có một sự thay đổi quan trọng mà chúng ta đang áp dụng so với cách truyền thống. Thay vì tính toán output của attention trước rồi mới normalize output đó, chúng ta sẽ tiến hành ngược lại: chúng ta sẽ thực hiện normalization trước, sau đó sử dụng kết quả này như input để tính attention.</p>
+<p>Sự thay đổi này không chỉ áp dụng trong kiến trúc LLAMA2 mà còn xuất hiện rộng rãi trong hầu hết các kiến trúc Transformers hiện đại.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Multi-head Attention</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>n_head <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>head_size <span class="op">=</span> n_embd <span class="op">//</span> n_head</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>opt_size <span class="op">=</span> n_head <span class="op">*</span> head_size <span class="co"># output size</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>head_size, opt_size</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>(9, 36)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Wqkv <span class="op">=</span> nn.Linear(n_embd, <span class="dv">3</span> <span class="op">*</span> opt_size)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>qkv <span class="op">=</span> Wqkv(x_embd_norm)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> einops <span class="im">import</span> rearrange</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>qkv <span class="op">=</span> rearrange(qkv, <span class="st">"... (three h d) -&gt; ... three h d"</span>, three<span class="op">=</span><span class="dv">3</span>, h <span class="op">=</span> n_head)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>q, k, v <span class="op">=</span> qkv.unbind(dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>q.shape, k.shape, v.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>(torch.Size([20, 218, 4, 9]),
+ torch.Size([20, 218, 4, 9]),
+ torch.Size([20, 218, 4, 9]))</code></pre>
+</div>
+</div>
+<p>Mục tiêu của đoạn code trên là đi tính query, key và value, còn chúng có ý nghĩa là gì thì hãy cũng xem xét ví dụ dưới đây.</p>
+<p>Hãy tưởng tượng rằng bạn là một nhà báo nổi tiếng đang thực hiện một cuộc phỏng vấn với một ngôi sao nổi tiếng, và bạn muốn thu thập thông tin quan trọng từ cuộc trò chuyện đó.</p>
+<ul>
+<li><p>Key có thể coi như danh sách câu hỏi bạn chuẩn bị trước cuộc phỏng vấn. Mỗi câu hỏi là một Key, và mỗi câu hỏi sẽ tập trung vào một khía cạnh cụ thể của cuộc trò chuyện. Ví dụ, một Key có thể là “Bạn đã từng giành giải Oscar chưa?”</p></li>
+<li><p>Value là câu trả lời mà ngôi sao đưa ra cho từng câu hỏi. Mỗi câu trả lời chứa thông tin quan trọng về cuộc trò chuyện, và nó sẽ được lưu trữ và sử dụng sau này khi bạn cần nắm bắt thông tin cụ thể từ cuộc phỏng vấn. Chúng ta có thể coi câu trả lời này là “value” của câu hỏi.</p></li>
+<li><p>Query là cách bạn đặt câu hỏi hoặc tìm kiếm thông tin trong cuộc phỏng vấn. Khi bạn muốn biết điều gì đó cụ thể hoặc muốn nắm bắt một thông tin quan trọng từ cuộc trò chuyện, bạn sẽ đặt câu hỏi hoặc tạo một “Query” riêng. Ví dụ, “Giới thiệu về những vai diễn nổi bật nhất của bạn?” có thể là một Query.</p></li>
+</ul>
+<p>Khi bạn đặt một câu hỏi (Query), model sẽ so sánh nó với danh sách các câu hỏi trước đó (Key) và quyết định câu trả lời nào (Value) chứa thông tin phù hợp nhất với câu hỏi của bạn. Điều này giống như việc bạn tập trung vào câu hỏi cụ thể nào trong cuộc trò chuyện để thu thập thông tin bạn cần.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Masked multi-head</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>softmax_scale <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> math.sqrt(q.shape[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> torch.einsum(<span class="st">"bthd,bshd-&gt;bhts"</span>, q, k <span class="op">*</span> softmax_scale)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Masking</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> torch.triu(torch.full((sequence_len, sequence_len), <span class="op">-</span><span class="fl">10000.0</span>), <span class="dv">1</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> scores <span class="op">+</span> mask</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>attention <span class="op">=</span> torch.softmax(scores, dim<span class="op">=-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ý tưởng chính ở đây là ta đang xây dựng một hệ thống dự đoán từ tiếp theo trong câu văn dựa trên các từ đã xuất hiện trước đó. Để thực hiện điều này, mỗi từ cần được dự đoán sẽ đóng vai trò là một Query, và các từ đã xuất hiện trước đó sẽ đóng vai trò là Key. Chúng ta sau đó so sánh tỉ lệ phù hợp giữa các query và các key để xác định những từ nào quan trọng hơn và sẽ được sử dụng để dự đoán từ tiếp theo.</p>
+<p>Đặc điểm quan trọng là chúng ta sử dụng một cơ chế “masking” để che đi thông tin của các từ đứng sau từ cần dự đoán. Điều này giúp mô hình tập trung vào việc sử dụng thông tin từ các từ trước đó để dự đoán từ tiếp theo mà không bị ảnh hưởng bởi các từ sau đó trong câu.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">=</span> torch.einsum(<span class="st">"bhts,bshd-&gt;bthd"</span>, attention, v)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">=</span> rearrange(attn_out, <span class="st">"... h d -&gt; ... (h d)"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>out_proj <span class="op">=</span> nn.Linear(opt_size, n_embd)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">=</span> out_proj(attn_out)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add residual</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> x_embd</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">+=</span> residual</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>attn_out.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>torch.Size([20, 218, 36])</code></pre>
+</div>
+</div>
+<p>Quá trình này được gọi là Self-Attention, vì điểm đặc biệt là giá trị của key và value được tạo ra từ chính bản thân câu văn hoặc chuỗi đầu vào.</p>
+<p>Self-Attention là một khía cạnh quan trọng trong kiến trúc Transformer, vì nó cho phép mô hình xác định mức độ quan trọng của các từ hoặc phần tử trong câu văn đối với từ hoặc phần tử cụ thể khác trong câu văn đó. Điều này giúp mô hình xử lý ngôn ngữ tự nhiên một cách linh hoạt và hiểu ngữ cảnh một cách tốt hơn.</p>
+</section>
+<section id="cross-attention" class="level2">
+<h2 class="anchored" data-anchor-id="cross-attention">Cross Attention</h2>
+<p><img src="images/chap1/cross_attention.png" alt="Cross Attention" width="400"></p>
+<p>Khác với Self Attention, Cross Attention đặt ra sự khác biệt bằng cách mà giá trị key và value không đến từ bản thân câu văn, mà chúng đến từ nguồn thông tin bên ngoài.</p>
+<p>Hãy cùng tưởng tượng một ví dụ để hiểu rõ hơn: Self Attention có thể được tưởng tượng như bạn đặt ra những câu hỏi cho chính bản thân mình (Key) và tự mình trả lời chúng (Value). Trong một ngày khác, bạn tiếp tục đặt ra những câu hỏi mới, nhưng lần này bạn không tự trả lời mà bạn xem xét những câu hỏi bạn đã đặt trước đó (Query) và xem câu hỏi nào (Key) phù hợp nhất với câu hỏi hiện tại (Query), sau đó bạn sẽ dựa vào câu trả lời đó (Value).</p>
+<p>Cross Attention, ngược lại, có thể được tưởng tượng như bạn tham gia vào một cuộc phỏng vấn với một diễn viên nổi tiếng. Trong cuộc phỏng vấn, bạn đặt ra những câu hỏi (Key) và ghi chép lại câu trả lời của người diễn viên đó (Value). Sau đó, vào một thời điểm khác, bạn tự đặt ra những câu hỏi cho chính mình (Query) và xem xét xem câu hỏi nào bạn đã đặt trong cuộc phỏng vấn (Key) phù hợp nhất với câu hỏi của bạn (Query) và sử dụng câu trả lời từ cuộc phỏng vấn đó (Value).</p>
+<p>Tuy nhiên trong dự án hiện tại của chúng ta, không cần thiết phải sử dụng Cross Attention vì chúng ta không cần sử dụng các key và value từ nguồn bên ngoài. Do đó, chúng ta có thể bỏ qua bước Cross Attention và tiếp tục với quá trình Feed Forward.</p>
+</section>
+<section id="feed-forward" class="level2">
+<h2 class="anchored" data-anchor-id="feed-forward">Feed Forward</h2>
+<p><img src="images/chap1/feed_forward.png" alt="Feed Forward" width="400"></p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize before calc feed forward</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> nn.LayerNorm(n_embd)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>attn_out_norm <span class="op">=</span> norm(attn_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Tương tự như quá trình Attention, chúng ta sử dụng normalize đầu ra của Attention trước khi đưa nó vào lớp Feed Forward.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>hidden_size <span class="op">=</span> <span class="dv">4</span> <span class="op">*</span> n_embd</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>linear_1 <span class="op">=</span> nn.Linear(n_embd, hidden_size)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>linear_2 <span class="op">=</span> nn.Linear(hidden_size, n_embd)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>act <span class="op">=</span> nn.ReLU()</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Feed forward output</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>hidden_states <span class="op">=</span> linear_1(attn_out_norm)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>hidden_states <span class="op">=</span> act(hidden_states)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>ffwd_out <span class="op">=</span> linear_2(hidden_states)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add residual</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> attn_out</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>ffwd_out <span class="op">+=</span> residual</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>ffwd_out.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>torch.Size([20, 218, 36])</code></pre>
+</div>
+</div>
+<p>Về bản chất, phần Feed Forward trong kiến trúc Transformer không quá phức tạp. Nó bao gồm một hidden layer và một output layer, kèm theo một hàm activation. Mặc dù có một số cải tiến trong LLAMA2, nhưng nguyên tắc cơ bản vẫn thì giống như đã được mô tả ở trên.</p>
+</section>
+<section id="transformer-block" class="level2">
+<h2 class="anchored" data-anchor-id="transformer-block">Transformer Block</h2>
+<p><img src="images/chap1/transformer_block.png" alt="Transformer Block" width="200"></p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Self Attention</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>attention_norm <span class="op">=</span> nn.LayerNorm(n_embd)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>x_embd_norm <span class="op">=</span> attention_norm(x_embd)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Multi-head Attention</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>n_head <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>head_size <span class="op">=</span> n_embd <span class="op">//</span> n_head</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>opt_size <span class="op">=</span> n_head <span class="op">*</span> head_size <span class="co"># output size</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>Wqkv <span class="op">=</span> nn.Linear(n_embd, <span class="dv">3</span> <span class="op">*</span> opt_size)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>qkv <span class="op">=</span> Wqkv(x_embd_norm)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>qkv <span class="op">=</span> rearrange(qkv, <span class="st">"... (three h d) -&gt; ... three h d"</span>, three<span class="op">=</span><span class="dv">3</span>, h <span class="op">=</span> n_head)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>q, k, v <span class="op">=</span> qkv.unbind(dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Masked multi-head</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>softmax_scale <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> math.sqrt(q.shape[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> torch.einsum(<span class="st">"bthd,bshd-&gt;bhts"</span>, q, k <span class="op">*</span> softmax_scale)</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> torch.triu(torch.full((sequence_len, sequence_len), <span class="op">-</span><span class="fl">10000.0</span>), <span class="dv">1</span>)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> scores <span class="op">+</span> mask</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>attention <span class="op">=</span> torch.softmax(scores, dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">=</span> torch.einsum(<span class="st">"bhts,bshd-&gt;bthd"</span>, attention, v)</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">=</span> rearrange(attn_out, <span class="st">"... h d -&gt; ... (h d)"</span>)</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Attention output</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>out_proj <span class="op">=</span> nn.Linear(opt_size, n_embd)</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">=</span> out_proj(attn_out)</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Add residual</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> x_embd</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>attn_out <span class="op">+=</span> residual</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Feed Forward</span></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>hidden_size <span class="op">=</span> <span class="dv">4</span> <span class="op">*</span> n_embd</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>linear_1 <span class="op">=</span> nn.Linear(n_embd, hidden_size)</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>linear_2 <span class="op">=</span> nn.Linear(hidden_size, n_embd)</span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>act <span class="op">=</span> nn.ReLU()</span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize</span></span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>ffwd_norm <span class="op">=</span> nn.LayerNorm(n_embd)</span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>attn_out_norm <span class="op">=</span> ffwd_norm(attn_out)</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Feed forward output</span></span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>hidden_states <span class="op">=</span> linear_1(attn_out_norm)</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>hidden_states <span class="op">=</span> act(hidden_states)</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>ffwd_out <span class="op">=</span> linear_2(hidden_states)</span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Add residual</span></span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> attn_out</span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>ffwd_out <span class="op">+=</span> residual</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>ffwd_out.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>torch.Size([20, 218, 36])</code></pre>
+</div>
+</div>
+<p>Quá trình từ input đã được embedding đi qua lớp Attention và lớp Feed Forward mà chúng ta vừa hoàn thành được gọi là một “block” trong kiến trúc Transformers. Trong hình ảnh, việc có một khung bao quanh quá trình Attention và Feed Forward ngụ ý rằng chúng hoạt động cùng nhau như một block duy nhất. Chữ “Nx” chỉ ra rằng ta có thể có nhiều block tùy ý. Trong trường hợp này, tôi chỉ sử dụng 1 block làm ví dụ, và nếu bạn muốn sử dụng 2 block, bạn có thể đơn giản sao chép toàn bộ đoạn code ở trên và dán vào một ô mới để tạo ra 2 block.</p>
+</section>
+<section id="transformer-head" class="level2">
+<h2 class="anchored" data-anchor-id="transformer-head">Transformer Head</h2>
+<p><img src="images/chap1/output_prob.png" alt="Output Probabilities" width="400"></p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize output feed forward</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> nn.LayerNorm(n_embd)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> norm(ffwd_out)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>last_linear <span class="op">=</span> nn.Linear(n_embd, vocab_size)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> last_linear(output)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>logits.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>torch.Size([20, 218, 50257])</code></pre>
+</div>
+</div>
+<p>Bởi vì có sự thay đổi trong quá trình normalize trong Feed Forward, nơi chúng ta thực hiện việc normalize trước khi truyền vào lớp Feed Forward. Vì vậy, chúng ta cần điều chỉnh kiến trúc model bằng cách thêm lớp normalize cho output của lớp Feed Forward trước khi truyền nó vào lớp Linear cuối cùng.</p>
+</section>
+<section id="loss" class="level2">
+<h2 class="anchored" data-anchor-id="loss">Loss</h2>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>loss_fct <span class="op">=</span> nn.CrossEntropyLoss()</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>logits  <span class="op">=</span> logits.view(<span class="op">-</span><span class="dv">1</span>, logits.shape[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> y.view(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> loss_fct(logits, labels)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>tensor(10.9201, grad_fn=&lt;NllLossBackward0&gt;)</code></pre>
+</div>
+</div>
+<p><img src="images/chap1/attention.png" alt="Transformers" width="200"></p>
+<p>Vậy là chúng ta đã hoàn thành toàn bộ kiến trúc Transformers được mô tả trong hình ảnh ở trên, và điều này cũng đồng nghĩa với việc chúng ta đã hiểu “backbone” của kiến trúc Transformers trong LLAMA2. Tuy nhiên, trong chương này, chúng ta chỉ đang viết code mà chưa sử dụng bất kỳ class nào. Trong chương tiếp theo, tôi sẽ sắp xếp code vào các class để làm cho kiến trúc trở nên có cấu trúc và giống với LLAMA2 hơn.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'alternate';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./baseclass.html" class="pagination-link">
+        <span class="nav-page-text">Basic Class</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
