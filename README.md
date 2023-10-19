@@ -4,8 +4,8 @@
 
 ## The Goal
 
-Dự án này đóng vai trò quan trọng như một bài kiểm tra cuối cùng của
-hành trình học tập của tôi. Gần đây, [những
+Dự án này đóng vai trò như một bài kiểm tra cuối khóa cho một môn học
+của tôi. Gần đây, [những
 video](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ)
 hướng dẫn tuyệt vời từ anh Karpathy đã mở ra cho tôi cái nhìn rõ ràng
 hơn về Deep Learning và Large Language Model. Tuy nhiên, vì đang tự học,
