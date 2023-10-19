@@ -1,0 +1,14 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 00_backbone.ipynb
+      - 01_baseclass.ipynb
+      - 02_llamap1.ipynb
+      - 03_llamap2.ipynb
+      - 04_initweight.ipynb
+      - 05_hyperparameter.ipynb
+      - 06_trainmodel.ipynb
+      - section: Appendix
+        contents:
+          - Appendix\00_transformer.ipynb

@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "llama2_project"
+  site-url: "https://nvtai040502.github.io/llama2_project"
+  description: "Building architecture transformers of LLAMA2 from scratch"
+  repo-branch: main
+  repo-url: "https://github.com/nvtai040502/llama2_project"

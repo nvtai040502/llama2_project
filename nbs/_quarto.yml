@@ -1,0 +1,51 @@
+project:
+  type: website
+  preview:
+    port: 3000
+    browser: false
+format:
+  
+  html:
+    theme: 
+        
+         dark: [cosmo, darkly]
+         light: cosmo
+    # highlight-style: github
+
+    css: styles.css
+    toc: true
+    # toc-depth: 4
+    # comments:
+    #   giscus: 
+    #     repo: quarto-dev/quarto-docs
+      
+    page-layout: article
+    code-overflow: scroll
+    code-copy: true
+    notebook-view: true
+    smooth-scroll: true
+    section-divs: true
+
+website:
+  page-navigation: true
+  reader-mode: true
+  # twitter-card: true
+  # open-graph: true
+  repo-actions: [issue]
+  navbar:
+    title: "LLAMA2 Project"
+    background: primary
+    search: true
+    collapse-below: lg
+    
+    tools:
+      - icon: github
+        href: https://github.com/nvtai040502
+  sidebar:
+    # style: floating
+    
+    style: "docked"
+    search: true
+    collapse-level: 1
+
+metadata-files: [nbdev.yml, sidebar.yml]
